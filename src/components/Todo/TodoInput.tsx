@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { useAppDispatch } from '../hooks/reduxHooks'
-import { addTodo } from '../store/reducers/TodoSlice'
+import { useAppDispatch } from '../../hooks/reduxHooks'
+import { addTodo } from '../../store/reducers/TodoSlice'
 import { RiAddBoxFill } from 'react-icons/ri'
 
 export const TodoInput = () => {

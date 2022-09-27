@@ -1,4 +1,4 @@
-import { useAppSelector } from "../hooks/reduxHooks"
+import { useAppSelector } from "../../hooks/reduxHooks"
 import { TodoItem } from "./TodoItem"
 
 export const TodoList = () => {

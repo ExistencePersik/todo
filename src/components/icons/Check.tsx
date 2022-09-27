@@ -2,9 +2,9 @@ import { ImCheckboxChecked } from 'react-icons/im'
 import cn from 'classnames'
 import { useAppDispatch } from '../../hooks/reduxHooks'
 import { toggleComplete } from '../../store/reducers/TodoSlice'
-import { ITodos } from '../../models/ITodos'
+import { IChecked } from '../../models/models'
 
-export const Check: React.FC<ITodos> = ({ completed, id }) => {
+export const Check: React.FC<IChecked> = ({ completed, id }) => {
   const dispatch = useAppDispatch()
 
   return (

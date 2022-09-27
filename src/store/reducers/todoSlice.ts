@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { ITodos } from '../../models/ITodos'
+import { ITodos } from '../../models/models'
 
 type TodosState = {
   list: ITodos[]
