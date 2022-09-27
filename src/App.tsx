@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
-import { Navigation } from './components/Navigation';
-import { AchievementsPage } from './pages/AchievementsPage';
-import { MainPage } from './pages/MainPage';
+import { Navigation } from './components/Navigation'
+import { AchievementsPage } from './pages/AchievementsPage'
+import { MainPage } from './pages/MainPage'
 
 function App() {
   return (
@@ -12,7 +12,7 @@ function App() {
         <Route path='/achievements' element={ <AchievementsPage /> } />
       </Routes>
     </>
-  );
+  )
 }
 
-export default App;
+export default App
