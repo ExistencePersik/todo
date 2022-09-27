@@ -24,12 +24,10 @@ export const Achievement: React.FC<IAchieved> = ({ title }) => {
   return (
     <>
       {!isAch && <button
-      className=""
       onClick={addToAchievements}
       > <ImHeart color='white' /> </button>}
 
       {isAch && <button
-      className=""
       onClick={removeFromAchievements}
       > <ImHeart color='red' /> </button>}
     </>
