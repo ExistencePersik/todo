@@ -7,7 +7,7 @@ export const TodoList = () => {
   return (
     <ul className='w-80'>
       {todos.map((todo) => (
-        <TodoItem {...todo}/>
+        <TodoItem key={todo.id} {...todo}/>
       ))}
     </ul>
   )
