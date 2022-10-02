@@ -33,9 +33,6 @@ const todoSlice = createSlice({
     removeTodo(state, action: PayloadAction<string>) {
       state.list = state.list.filter(todo => todo.id !== action.payload)
       localStorage.setItem(MY_TASK, JSON.stringify(state.list))
-    },
-    editTodo(state, action) {
-
     }
   }
 })
