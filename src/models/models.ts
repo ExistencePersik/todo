@@ -12,7 +12,3 @@ export interface IChecked {
 export interface IAchieved {
   title: string,
 }
-
-export interface IRemoved {
-  id: string,
-}

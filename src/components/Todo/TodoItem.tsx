@@ -10,7 +10,7 @@ export const TodoItem: React.FC<ITodos> = ({ id, title, completed }) => {
       <Check id={id} completed={completed} />
       <span className={cn('w-[190px]', {'line-through': completed})}>{title}</span>
       <Achievement title={title}/>
-      <Bin id={id} />
+      <Bin id={id} completed={completed} title={title} />
     </li>
   )
 }

@@ -1,11 +1,14 @@
 import { ImCheckboxChecked } from 'react-icons/im'
 import cn from 'classnames'
-import { useAppDispatch } from '../../hooks/reduxHooks'
-import { toggleComplete } from '../../store/reducers/TodoSlice'
-import { IChecked } from '../../models/models'
+import { IChecked, ITodos } from '../../models/models'
+import { useToggleTodosMutation } from '../../store/todosApi'
 
 export const Check: React.FC<IChecked> = ({ completed, id }) => {
-  const dispatch = useAppDispatch()
+  const [toggleCompleted] = useToggleTodosMutation()
+
+  const handlerToggleTodo = async () => {
+    await toggleCompleted({ id, completed: !completed } as ITodos)
+  }
 
   return (
     <button
@@ -14,7 +17,7 @@ export const Check: React.FC<IChecked> = ({ completed, id }) => {
           'bg-pink-400': completed,
         }
       )}
-      onClick={() => dispatch(toggleComplete(id))}
+      onClick={() => handlerToggleTodo()}
     >
       {completed && <ImCheckboxChecked size={24} className='text-zinc-900'/>}
     </button>
