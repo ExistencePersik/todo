@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
-import { useAppDispatch } from '../../hooks/reduxHooks'
-import { addTodo } from '../../store/reducers/TodoSlice'
 import { RiAddBoxFill } from 'react-icons/ri'
+import { useAddTodosMutation } from '../../store/todosApi'
+import { ITodos } from '../../models/models'
 
 export const TodoInput = () => {
   const [text, setText] = useState('')
-  const dispatch = useAppDispatch()
+  const [addTodo] = useAddTodosMutation()
 
-  const handleAddTodo = () => {
+  const handleAddTodo = async () => {
     if (text.trim().length) {
-      dispatch(addTodo(text))
+      await addTodo({title: text, completed: false} as ITodos)
       setText('')
     }
   }

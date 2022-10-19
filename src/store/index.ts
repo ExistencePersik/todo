@@ -1,12 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
-import todoReducer from './reducers/TodoSlice'
+import { todosApi } from './todosApi'
 import achievementReducer from './reducers/AchievementsSlice'
 
 export const store = configureStore({
   reducer: {
-    todos: todoReducer,
-    achievements: achievementReducer
+    achievements: achievementReducer,
+    [todosApi.reducerPath]: todosApi.reducer
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(todosApi.middleware)
 })
 
 export type RootState = ReturnType<typeof store.getState>

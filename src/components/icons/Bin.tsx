@@ -1,13 +1,16 @@
 import { ImBin } from 'react-icons/im'
-import { useAppDispatch } from '../../hooks/reduxHooks'
-import { removeTodo } from '../../store/reducers/TodoSlice'
-import { IRemoved } from '../../models/models'
+import { ITodos } from '../../models/models'
+import { useRemoveTodosMutation } from '../../store/todosApi'
 
-export const Bin: React.FC<IRemoved> = ({ id }) => {
-  const dispatch = useAppDispatch()
+export const Bin: React.FC<ITodos> = (id) => {
+  const [removeTodo] = useRemoveTodosMutation()
+
+  const handleRemoveTodo = async (id: ITodos) => {
+    await removeTodo(id)
+  }
 
   return (
-    <button onClick={() => dispatch(removeTodo(id))}>
+    <button onClick={() => handleRemoveTodo(id)}>
       <ImBin size={24} className='text-zinc-400 hover:text-zinc-50'/>
     </button>
   )
