@@ -18,7 +18,7 @@ export const todosApi = createApi({
           ]
         : [{ type: 'Todos', id: 'LIST' }],
     }),
-    addTodos: build.mutation<ITodos, ITodos>({
+    addTodo: build.mutation<ITodos, ITodos>({
       query: (body) => ({
         url: `todos`,
         method: 'POST',
@@ -26,7 +26,7 @@ export const todosApi = createApi({
       }),
       invalidatesTags: [{type: 'Todos', id: 'LIST'}]
     }),
-    toggleTodos: build.mutation<ITodos, ITodos>({
+    toggleTodo: build.mutation<ITodos, ITodos>({
       query: ({id, ...patch}) => ({
         url: `todos/${id}`,
         method: 'PATCH',
@@ -34,7 +34,7 @@ export const todosApi = createApi({
       }),
       invalidatesTags: [{type: 'Todos', id: 'LIST'}]
     }),
-    removeTodos: build.mutation<ITodos, ITodos>({
+    removeTodo: build.mutation<ITodos, ITodos>({
       query: (todo) => ({
         url: `todos/${todo.id}`,
         method: 'DELETE',
@@ -44,4 +44,4 @@ export const todosApi = createApi({
   })
 })
 
-export const {useGetTodosQuery, useAddTodosMutation, useToggleTodosMutation, useRemoveTodosMutation} = todosApi
+export const {useGetTodosQuery, useAddTodoMutation, useToggleTodoMutation, useRemoveTodoMutation} = todosApi

@@ -1,9 +1,9 @@
 import { ImBin } from 'react-icons/im'
 import { ITodos } from '../../models/models'
-import { useRemoveTodosMutation } from '../../store/todosApi'
+import { useRemoveTodoMutation } from '../../store/todosApi'
 
 export const Bin: React.FC<ITodos> = (id) => {
-  const [removeTodo] = useRemoveTodosMutation()
+  const [removeTodo] = useRemoveTodoMutation()
 
   const handleRemoveTodo = async (id: ITodos) => {
     await removeTodo(id)

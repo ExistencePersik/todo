@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { RiAddBoxFill } from 'react-icons/ri'
-import { useAddTodosMutation } from '../../store/todosApi'
+import { useAddTodoMutation } from '../../store/todosApi'
 import { ITodos } from '../../models/models'
 
 export const TodoInput = () => {
   const [text, setText] = useState('')
-  const [addTodo] = useAddTodosMutation()
+  const [addTodo] = useAddTodoMutation()
 
   const handleAddTodo = async () => {
     if (text.trim().length) {
