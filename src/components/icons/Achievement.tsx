@@ -1,11 +1,11 @@
 import { ImHeart } from 'react-icons/im'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { useState } from 'react'
-import { IAchieved } from '../../models/models'
+import { ITodos } from '../../models/models'
 import { addAchievement, removeAchievement } from '../../store/reducers/AchievementsSlice'
 
 
-export const Achievement: React.FC<IAchieved> = ({ title }) => {
+export const Achievement: React.FC<ITodos> = ({ title }) => {
   const dispatch = useAppDispatch()
   const {achievements} = useAppSelector(state => state.achievements)
   const [isAch, setIsAch] = useState(achievements.includes(title))
