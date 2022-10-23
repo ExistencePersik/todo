@@ -2,21 +2,14 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { ITodos } from '../models/models'
 
 export const todosApi = createApi({
-  reducerPath: 'todosAi',
+  reducerPath: 'todosApi',
   tagTypes: ['Todos'],
   baseQuery: fetchBaseQuery({
     baseUrl: 'http://localhost:5000/'
   }),
   endpoints: build => ({
     getTodos: build.query<ITodos[], void>({
-      query: () => `todos`,
-      providesTags: (result) =>
-      result
-        ? [
-            ...result.map(({ id }) => ({ type: 'Todos' as const, id })),
-            { type: 'Todos', id: 'LIST' },
-          ]
-        : [{ type: 'Todos', id: 'LIST' }],
+      query: () => `todos`
     }),
     addTodo: build.mutation<ITodos, ITodos>({
       query: (body) => ({
@@ -24,7 +17,18 @@ export const todosApi = createApi({
         method: 'POST',
         body,
       }),
-      invalidatesTags: [{type: 'Todos', id: 'LIST'}]
+      async onQueryStarted( _ , { dispatch, queryFulfilled } ) {
+        try {
+          const { data: addedTodo } = await queryFulfilled
+          dispatch(
+            todosApi.util.updateQueryData('getTodos', undefined, (draft) => {
+              draft.push(addedTodo)
+            })
+          )
+        } catch (err) {
+          console.log(err)
+        }
+      }
     }),
     toggleTodo: build.mutation<ITodos, ITodos>({
       query: ({id, ...patch}) => ({
@@ -32,14 +36,38 @@ export const todosApi = createApi({
         method: 'PATCH',
         body: patch,
       }),
-      invalidatesTags: [{type: 'Todos', id: 'LIST'}]
+      async onQueryStarted({ id, completed }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          todosApi.util.updateQueryData('getTodos', undefined, (draft) => {
+            const task = draft[Number(id) - 1]
+            if (task) task.completed = completed
+          })
+        )
+        try {
+          await queryFulfilled
+        } catch {
+          patchResult.undo()
+        }
+      }
     }),
-    removeTodo: build.mutation<ITodos, ITodos>({
+    removeTodo: build.mutation<ITodos, Partial<ITodos>>({
       query: (todo) => ({
         url: `todos/${todo.id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: [{type: 'Todos', id: 'LIST'}]
+      async onQueryStarted({ id }, { dispatch, queryFulfilled }) {
+        const deleteResult = dispatch(
+          todosApi.util.updateQueryData('getTodos', undefined, (draft) => {
+            const index = draft.findIndex(todo => todo.id === id)
+            draft.splice(index, 1)
+          })
+        )
+        try {
+          await queryFulfilled
+        } catch {
+          deleteResult.undo()
+        }
+      }
     })
   })
 })

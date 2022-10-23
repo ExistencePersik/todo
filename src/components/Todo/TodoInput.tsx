@@ -18,7 +18,7 @@ export const TodoInput = () => {
     if (event.code === "Enter") {
       handleAddTodo()
     }
-  };
+  }
 
   return (
     <label className='flex flex-col justify-center items-center w-80'>
