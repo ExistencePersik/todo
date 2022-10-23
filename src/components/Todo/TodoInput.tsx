@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { RiAddBoxFill } from 'react-icons/ri'
+import { ImPlus } from 'react-icons/im'
 import { useAddTodoMutation } from '../../store/todosApi'
 import { ITodos } from '../../models/models'
 
@@ -9,7 +9,7 @@ export const TodoInput = () => {
 
   const handleAddTodo = async () => {
     if (text.trim().length) {
-      await addTodo({title: text, completed: false} as ITodos)
+      await addTodo({title: text, completed: false, achieved: false} as ITodos)
       setText('')
     }
   }
@@ -34,7 +34,7 @@ export const TodoInput = () => {
           className='w-11 h-11 mb-5 bg-pink-400 rounded-full hover:bg-pink-600'
           onClick={handleAddTodo}
         >
-          <span className='flex flex-col items-center'><RiAddBoxFill /></span>
+          <span className='flex flex-col items-center h-4'><ImPlus /></span>
         </button>
       </label>
   )

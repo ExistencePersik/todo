@@ -1,19 +1,21 @@
-import { useAppSelector } from '../../hooks/reduxHooks'
+import { ITodos } from '../../models/models'
+import { useGetTodosQuery } from '../../store/todosApi'
 import { AchievementItem } from './AchievementItem'
 
 export const AchievementList = () => {
-  const {achievements} = useAppSelector(state => state.achievements)
-
-
-  if (achievements.length === 0) return <p className='text-center'>You have no achievements.</p>
+  const {data, isLoading, isError} = useGetTodosQuery()
+  const achievedData = data?.filter((todo) => todo.achieved === true);
 
   return (
-    <div className='flex justify-center pt-10 mx-auto'>
+    <>
+      {isLoading && <h2>Loading...</h2>}
+      {isError && <h2 className='text-red-600'>Error</h2>}
+
       <ul className='list-none w-80'>
-      { achievements.map(f => (
-        <AchievementItem key={f} title={f} />
-      )) }
+        {achievedData?.map((todo: ITodos) => (
+          <AchievementItem key={todo.id} {...todo}/>
+        ))}
       </ul>
-    </div>
+    </>
   )
 }

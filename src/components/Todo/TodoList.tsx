@@ -10,10 +10,10 @@ export const TodoList = () => {
       {isLoading && <h2>Loading...</h2>}
       {isError && <h2 className='text-red-600'>Error</h2>}
 
-      <ul className='w-80'>
+      <ul className='list-none w-80'>
         {data?.map((todo: ITodos) => (
           <TodoItem key={todo.id} {...todo}/>
-          ))}
+        ))}
       </ul>
     </>
   )

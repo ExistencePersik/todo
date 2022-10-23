@@ -1,9 +1,9 @@
 import { ImCheckboxChecked } from 'react-icons/im'
-import cn from 'classnames'
-import { IChecked, ITodos } from '../../models/models'
+import { ITodos } from '../../models/models'
 import { useToggleTodoMutation } from '../../store/todosApi'
+import cn from 'classnames'
 
-export const Check: React.FC<IChecked> = ({ completed, id }) => {
+export const Check: React.FC<Partial<ITodos>> = ({ id, completed }) => {
   const [toggleCompleted] = useToggleTodoMutation()
 
   const handlerToggleTodo = async () => {

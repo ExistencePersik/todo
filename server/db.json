@@ -3,36 +3,43 @@
     {
       "title": "Learn HTML",
       "completed": true,
+      "achieved": false,
       "id": 1
     },
     {
       "title": "Learn CSS",
       "completed": true,
+      "achieved": false,
       "id": 2
     },
     {
       "title": "Learn JavaScript",
       "completed": true,
+      "achieved": false,
       "id": 3
     },
     {
       "title": "Learn TypeScript",
       "completed": true,
+      "achieved": true,
       "id": 4
     },
     {
       "title": "Learn React",
       "completed": true,
+      "achieved": true,
       "id": 5
     },
     {
       "title": "Learn Redux",
       "completed": true,
+      "achieved": true,
       "id": 6
     },
     {
       "title": "Find a job",
       "completed": false,
+      "achieved": false,
       "id": 7
     }
   ]

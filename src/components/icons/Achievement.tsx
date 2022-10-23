@@ -1,35 +1,22 @@
 import { ImHeart } from 'react-icons/im'
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
-import { useState } from 'react'
 import { ITodos } from '../../models/models'
-import { addAchievement, removeAchievement } from '../../store/reducers/AchievementsSlice'
+import { useToggleAchievementMutation } from '../../store/todosApi'
 
+export const Achievement: React.FC<Partial<ITodos>> = ({ id, achieved }) => {
+  const [toggleAchieved] = useToggleAchievementMutation()
 
-export const Achievement: React.FC<ITodos> = ({ title }) => {
-  const dispatch = useAppDispatch()
-  const {achievements} = useAppSelector(state => state.achievements)
-  const [isAch, setIsAch] = useState(achievements.includes(title))
-
-  const addToAchievements = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
-    dispatch(addAchievement(title))
-    setIsAch(true)
-  }
-  const removeFromAchievements = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
-    dispatch(removeAchievement(title))
-    setIsAch(false)
+  const handlerToggleTodo = async () => {
+    await toggleAchieved({ id, achieved: !achieved } as ITodos)
   }
 
   return (
-    <>
-      {!isAch && <button
-      onClick={addToAchievements}
-      > <ImHeart color='white' /> </button>}
-
-      {isAch && <button
-      onClick={removeFromAchievements}
-      > <ImHeart color='red' /> </button>}
-    </>
+    <button
+      onClick={() => handlerToggleTodo()}
+    >
+      {achieved
+        ? <ImHeart color='red'/>
+        : <ImHeart color='white'/>
+      }
+    </button>
   )
 }

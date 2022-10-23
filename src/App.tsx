@@ -1,7 +1,8 @@
 import { Routes, Route } from 'react-router-dom'
 import { Navigation } from './components/Navigation'
-import { AchievementsPage } from './pages/AchievementsPage'
 import { MainPage } from './pages/MainPage'
+import { AchievementsPage } from './pages/AchievementsPage'
+
 
 function App() {
   return (

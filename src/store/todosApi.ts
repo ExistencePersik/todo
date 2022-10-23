@@ -68,8 +68,28 @@ export const todosApi = createApi({
           deleteResult.undo()
         }
       }
+    }),
+    toggleAchievement: build.mutation<ITodos, ITodos>({
+      query: ({id, ...patch}) => ({
+        url: `todos/${id}`,
+        method: 'PATCH',
+        body: patch,
+      }),
+      async onQueryStarted({ id, achieved }, { dispatch, queryFulfilled }) {
+        const patchAchievement = dispatch(
+          todosApi.util.updateQueryData('getTodos', undefined, (draft) => {
+            const task = draft[Number(id) - 1]
+            if (task) task.achieved = achieved
+          })
+        )
+        try {
+          await queryFulfilled
+        } catch {
+          patchAchievement.undo()
+        }
+      }
     })
   })
 })
 
-export const {useGetTodosQuery, useAddTodoMutation, useToggleTodoMutation, useRemoveTodoMutation} = todosApi
+export const {useGetTodosQuery, useAddTodoMutation, useToggleTodoMutation, useRemoveTodoMutation, useToggleAchievementMutation} = todosApi
