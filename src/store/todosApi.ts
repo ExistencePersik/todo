@@ -39,7 +39,7 @@ export const todosApi = createApi({
       async onQueryStarted({ id, completed }, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
           todosApi.util.updateQueryData('getTodos', undefined, (draft) => {
-            const task = draft[Number(id) - 1]
+            const task = draft[draft.findIndex(todo => todo.id === id)]
             if (task) task.completed = completed
           })
         )
@@ -50,26 +50,6 @@ export const todosApi = createApi({
         }
       }
     }),
-    // dndTodo: build.mutation<ITodos, ITodos>({
-    //   query: (body) => ({
-    //     url: `todos`,
-    //     method: 'PATCH',
-    //     body,
-    //   }),
-    //   async onQueryStarted({ id, completed }, { dispatch, queryFulfilled }) {
-    //     const patchResult = dispatch(
-    //       todosApi.util.updateQueryData('getTodos', undefined, (draft) => {
-    //         const task = draft[Number(id) - 1]
-    //         if (task) task.completed = completed
-    //       })
-    //     )
-    //     try {
-    //       await queryFulfilled
-    //     } catch {
-    //       patchResult.undo()
-    //     }
-    //   }
-    // }),
     removeTodo: build.mutation<ITodos, Partial<ITodos>>({
       query: (todo) => ({
         url: `todos/${todo.id}`,
@@ -98,7 +78,7 @@ export const todosApi = createApi({
       async onQueryStarted({ id, achieved }, { dispatch, queryFulfilled }) {
         const patchAchievement = dispatch(
           todosApi.util.updateQueryData('getTodos', undefined, (draft) => {
-            const task = draft[Number(id) - 1]
+            const task = draft[draft.findIndex(todo => todo.id === id)]
             if (task) task.achieved = achieved
           })
         )

@@ -6,7 +6,7 @@ import { TodoItem } from './TodoItem'
 
 export const TodoList = () => {
   const dispatch = useAppDispatch()
-  const {data, isLoading, isError} = useGetTodosQuery()
+  const {data = [], isLoading, isError} = useGetTodosQuery()
 
   const handleOnDragEnd = (result: DropResult) => {
     if (!result.destination) {
@@ -21,8 +21,9 @@ export const TodoList = () => {
 
     dispatch(
       todosApi.util.updateQueryData('getTodos', undefined, (draft) => {
-        const dndTodo = draft.splice(dragIndex, 1)
-        draft.splice(dropIndex, 0, dndTodo[0])
+        const result = draft
+        const dndTodo = result.splice(dragIndex, 1)
+        result.splice(dropIndex, 0, dndTodo[0])
       })
     )
   }
@@ -34,8 +35,9 @@ export const TodoList = () => {
 
       <Droppable droppableId='droppable'>
         {(provided) => (
-          <div ref={provided.innerRef}
+          <ul ref={provided.innerRef}
           {...provided.droppableProps}
+          className='list-none w-80'
           >
            {data !== undefined &&
               data.map((todo: ITodos, index: number) => (
@@ -45,27 +47,21 @@ export const TodoList = () => {
                 draggableId={`${todo.id}`}
               >
                   {(providedInner) => (
-                    <div
+                    <li
                       ref={providedInner.innerRef}
                       {...providedInner.draggableProps}
                       {...providedInner.dragHandleProps}
+                      className='flex items-center justify-around mb-4 rounded-2xl bg-zinc-800 p-5 w-full'
                     >
                       <TodoItem {...todo}/>
-                    </div>
+                    </li>
                   )}
                 </Draggable>
               ))}
             {provided.placeholder}
-          </div>
+          </ul>
         )}
       </Droppable>
     </DragDropContext>
   )
 }
-
-
-{/* <ul className='list-none w-80'>
-{data.map((todo: ITodos) => (
-  <TodoItem key={todo.id} {...todo}/>
-  ))}
-<ul/> */}
