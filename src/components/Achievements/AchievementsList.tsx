@@ -1,4 +1,5 @@
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd'
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import { useAppDispatch } from '../../hooks/reduxHooks'
 import { ITodos } from '../../models/models'
 import { todosApi, useGetTodosQuery } from '../../store/todosApi'
@@ -42,35 +43,42 @@ export const AchievementList = () => {
       {isError && <h2 className='text-red-600'>Error</h2>}
 
       <Droppable droppableId='droppable'>
-        {(provided) => (
-          <ul ref={provided.innerRef}
-          {...provided.droppableProps}
-          className='list-none w-80'
+        {provided => (
+          <ul
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+            className='list-none w-80'
           >
-           {achievedData !== undefined &&
-              achievedData.map((todo: ITodos, index: number) => (
-                <Draggable
-                key={todo.id}
-                index={index}
-                draggableId={`${todo.id}`}
-              >
-                  {(providedInner) => (
+            <TransitionGroup>
+              {data !== undefined &&
+               achievedData.map((todo: ITodos, index: number) => (
+                <CSSTransition
+                  timeout={300}
+                  classNames='todo-fade'
+                  key={todo.id}
+                >
+                  <Draggable
+                    index={index}
+                    draggableId={`${todo.id}`}
+                  >
+                    {(providedInner) => (
                     <li
                       ref={providedInner.innerRef}
                       {...providedInner.draggableProps}
                       {...providedInner.dragHandleProps}
-                      className='flex items-center mb-4 rounded-2xl bg-zinc-800 p-5 w-full shadow-lg shadow-green-500'
+                      className='flex space-between items-center mb-4 rounded-2xl bg-zinc-800 p-5 w-full shadow-lg shadow-yellow-400'
                     >
                       <AchievementItem {...todo}/>
                     </li>
-                  )}
-                </Draggable>
+                    )}
+                  </Draggable>
+                </CSSTransition>
               ))}
+            </TransitionGroup>
             {provided.placeholder}
           </ul>
         )}
       </Droppable>
-
     </DragDropContext>
   )
 }

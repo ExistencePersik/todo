@@ -50,7 +50,7 @@ export const todosApi = createApi({
         }
       }
     }),
-    removeTodo: build.mutation<ITodos, Partial<ITodos>>({
+    removeTodo: build.mutation<ITodos, ITodos>({
       query: (todo) => ({
         url: `todos/${todo.id}`,
         method: 'DELETE',

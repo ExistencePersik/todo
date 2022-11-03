@@ -2,9 +2,79 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@600;700&display=swap');
+
 body {
   background-color: rgb(24 24 27);
   font-size: 1.5rem;
   height: 100%;
   color: rgb(228 228 231);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    display: none;
+  }
+  to {
+    opacity: 1;
+    display: inherit;
+  }
+}
+
+.fade-enter {
+  opacity: 0;
+  display: none;
+}
+
+.fade-enter-active {
+  animation-name: fadeIn;
+  animation-duration: 0.3s;
+  animation-delay: 0.4s;
+  animation-fill-mode: backwards;
+}
+
+.fade-enter-done {
+  animation-play-state: paused;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    display: inherit;
+  }
+  to {
+    opacity: 0.01;
+    display: none;
+  }
+}
+
+.fade-exit-active {
+  animation-name: fadeOut;
+  animation-duration: 0.4s;
+  animation-fill-mode: forwards;
+}
+
+.todo-fade-enter {
+  opacity: 0.1;
+}
+
+.todo-fade-enter.todo-fade-enter-active {
+  opacity: 1;
+  overflow: hidden;
+  transition: all 250ms ease-in-out;
+}
+
+.todo-fade-exit {
+  opacity: 1;
+  overflow: hidden;
+}
+
+.todo-fade-exit.todo-fade-exit-active {
+  opacity: 0.1;
+  transition: all 250ms;
 }
