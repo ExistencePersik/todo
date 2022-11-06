@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { ImPlus } from 'react-icons/im'
 import { useAddTodoMutation } from '../../store/todosApi'
-import { ITodos } from '../../models/models'
 
 export const TodoInput = () => {
   const [text, setText] = useState('')
@@ -9,7 +8,7 @@ export const TodoInput = () => {
 
   const handleAddTodo = async () => {
     if (text.trim().length) {
-      await addTodo({title: text, completed: false, achieved: false} as ITodos)
+      await addTodo(text)
       setText('')
     }
   }

@@ -11,11 +11,15 @@ export const todosApi = createApi({
     getTodos: build.query<ITodos[], void>({
       query: () => `todos`
     }),
-    addTodo: build.mutation<ITodos, ITodos>({
-      query: (body) => ({
+    addTodo: build.mutation<ITodos, string>({
+      query: (text) => ({
         url: `todos`,
         method: 'POST',
-        body,
+        body: {
+          title: text,
+          completed: false,
+          achieved: false,
+        }
       }),
       async onQueryStarted( _ , { dispatch, queryFulfilled } ) {
         try {
