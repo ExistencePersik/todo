@@ -28,8 +28,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "dev": "npx concurrently \"npm run server\" \"npm run start\"",
-    "server": "npx json-server -w server/db.json -p 5000",
+    "dev": "concurrently \"npm run server\" \"npm run start\"",
+    "server": "json-server -w server/db.json -p 5000",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -55,6 +55,7 @@
   "devDependencies": {
     "@types/react-transition-group": "^4.4.5",
     "autoprefixer": "^10.4.12",
+    "json-server": "^0.17.1",
     "postcss": "^8.4.16",
     "tailwindcss": "^3.1.8"
   }
