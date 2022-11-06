@@ -46,7 +46,7 @@ export const TodoList = () => {
                data.map((todo: ITodos, index: number) => (
                 <CSSTransition
                   timeout={300}
-                  classNames='todo-fade'
+                  classNames='fade'
                   key={todo.id}
                 >
                   <Draggable

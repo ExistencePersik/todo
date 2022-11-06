@@ -15,66 +15,23 @@ body {
   color: rgb(228 228 231);
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    display: none;
-  }
-  to {
-    opacity: 1;
-    display: inherit;
-  }
-}
-
 .fade-enter {
-  opacity: 0;
+  opacity: 0.1;
   display: none;
 }
 
-.fade-enter-active {
-  animation-name: fadeIn;
-  animation-duration: 0.3s;
-  animation-delay: 0.4s;
-  animation-fill-mode: backwards;
-}
-
-.fade-enter-done {
-  animation-play-state: paused;
-}
-
-@keyframes fadeOut {
-  from {
-    opacity: 1;
-    display: inherit;
-  }
-  to {
-    opacity: 0.01;
-    display: none;
-  }
-}
-
-.fade-exit-active {
-  animation-name: fadeOut;
-  animation-duration: 0.4s;
-  animation-fill-mode: forwards;
-}
-
-.todo-fade-enter {
-  opacity: 0.1;
-}
-
-.todo-fade-enter.todo-fade-enter-active {
+.fade-enter.fade-enter-active {
   opacity: 1;
   overflow: hidden;
-  transition: all 250ms ease-in-out;
+  transition: all 350ms ease-in-out;
 }
 
-.todo-fade-exit {
+.fade-exit {
   opacity: 1;
   overflow: hidden;
 }
 
-.todo-fade-exit.todo-fade-exit-active {
+.fade-exit.fade-exit-active {
   opacity: 0.1;
-  transition: all 250ms;
+  transition: all 350ms;
 }
