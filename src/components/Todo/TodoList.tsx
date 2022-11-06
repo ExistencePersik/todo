@@ -14,8 +14,8 @@ export const TodoList = () => {
       return
     }
 
-    const dragIndex = result.source.index
-    const dropIndex = result.destination.index
+    const { index: dragIndex } = result.source
+    const { index: dropIndex } = result.destination
 
     console.log("from", dragIndex)
     console.log("to", dropIndex)
