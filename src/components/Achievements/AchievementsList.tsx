@@ -21,12 +21,8 @@ export const AchievementList = () => {
     console.log("from", dragIndex)
     console.log("to", dropIndex)
 
-    const swapItems = function(arr: ITodos[], a: number, b: number ){
-      arr.slice()
-      arr[a] = arr.splice(b, 1, arr[a])[0]
-    }
-
-    swapItems(achievedData, dragIndex, dropIndex)
+    achievedData.slice()
+    achievedData[dragIndex] = achievedData.splice(dropIndex, 1, achievedData[dragIndex])[0]
 
     // dispatch(
     //   todosApi.util.updateQueryData('getTodos', undefined, (draft) => {
