@@ -1,12 +1,10 @@
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
-import { useAppDispatch } from '../../hooks/reduxHooks'
 import { ITodos } from '../../models/models'
-import { todosApi, useGetTodosQuery } from '../../store/todosApi'
+import { useGetTodosQuery } from '../../store/todosApi'
 import { AchievementItem } from './AchievementItem'
 
 export const AchievementList = () => {
-  const dispatch = useAppDispatch()
   const {data = [], isLoading, isError} = useGetTodosQuery()
   const achievedData = data.filter((todo) => todo.achieved === true)
 
@@ -23,14 +21,6 @@ export const AchievementList = () => {
 
     achievedData.slice()
     achievedData[dragIndex] = achievedData.splice(dropIndex, 1, achievedData[dragIndex])[0]
-
-    // dispatch(
-    //   todosApi.util.updateQueryData('getTodos', undefined, (draft) => {
-    //     const result = draft.filter((todo) => todo.achieved === true)
-    //     const dndTodo = result.splice(dragIndex, 1)
-    //     result.splice(dropIndex, 0, dndTodo[0])
-    //   })
-    // )
   }
 
   return (
