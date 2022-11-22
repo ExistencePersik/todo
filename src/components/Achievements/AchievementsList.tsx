@@ -80,6 +80,7 @@ export const AchievementList = () => {
     <DragDropContext onDragEnd={handleOnDragEnd}>
       {isLoading && <h2>Loading...</h2>}
       {isError && <h2 className='text-red-600'>Error</h2>}
+      {achievedData.length === 0 && <h2>Achievement List is empty</h2>}
 
       <Droppable droppableId='droppable'>
         {provided => (

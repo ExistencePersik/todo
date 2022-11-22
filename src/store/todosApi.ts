@@ -9,7 +9,8 @@ export const todosApi = createApi({
   }),
   endpoints: build => ({
     getTodos: build.query<ITodos[], void>({
-      query: () => `todos`
+      query: () => `todos`,
+      transformResponse: (res: ITodos[]) => res.sort((a, b) => a.index_number - b.index_number)
     }),
     addTodo: build.mutation<ITodos, string>({
       query: (text) => ({
@@ -19,6 +20,7 @@ export const todosApi = createApi({
           title: text,
           completed: false,
           achieved: false,
+          index_number: Date.now()
         }
       }),
       async onQueryStarted( _ , { dispatch, queryFulfilled } ) {
@@ -104,9 +106,7 @@ export const todosApi = createApi({
           todosApi.util.updateQueryData('getTodos', undefined, (draft) => {
             const task = draft[draft.findIndex(todo => todo.id === id)]
             if (task) {
-              task.title = data.title
-              task.achieved = data.achieved
-              task.completed = data.completed
+              task.index_number = data.index_number
             }
           })
         )
