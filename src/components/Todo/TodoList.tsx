@@ -1,5 +1,4 @@
-import { useRef } from 'react'
-import cn from 'classnames'
+import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import { ITodos } from '../../models/models'
 import { useEditTodoMutation, useGetTodosQuery } from '../../store/todosApi'
@@ -19,10 +18,8 @@ export const TodoList = () => {
     const dragId = data[dragIndex].id
     const dropId = data[dropIndex].id
 
-  const dragEnterHandler = (e: React.DragEvent<HTMLElement>, id: string, index: number) => {
-    dropId.current = id
-    dropIndex.current = index
-  }
+    console.log("from", dragIndex)
+    console.log("to", dropIndex)
 
     data.forEach(async (todo) => {
       if (todo.id === dropId) {
@@ -79,35 +76,47 @@ export const TodoList = () => {
   }
 
   return (
-    <>
+    <DragDropContext onDragEnd={handleOnDragEnd}>
       {isLoading && <h2>Loading...</h2>}
       {isError && <h2 className='text-red-600'>Error</h2>}
 
-      <ul className='list-none w-80'>
-        <TransitionGroup>
-          {data !== undefined &&
-            data.map((todo: ITodos, index: number) => (
-            <CSSTransition
-              timeout={300}
-              classNames='fade'
-              key={todo.id}
-            >
-              <li
-                className='cursor-grab flex items-center justify-between mb-4 rounded-2xl bg-zinc-800 p-5 w-full'
-                draggable
-                onDragStart={(e) => dragStartHandler(e, todo.id, index)}
-                onDragOver={(e) => dragOverHandler(e)}
-                onDragEnter={(e) => dragEnterHandler(e, todo.id, index)}
-                onDragLeave={(e) => dragLeaveHandler(e)}
-                onDrop={(e) => dragLeaveHandler(e)}
-                onDragEnd={(e) => dropHandler(e)}
+      <Droppable droppableId='droppable'>
+        {provided => (
+          <ul
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+            className='list-none w-80'
+          >
+            <TransitionGroup>
+              {data !== undefined &&
+               data.map((todo: ITodos, index: number) => (
+                <CSSTransition
+                  timeout={300}
+                  classNames='fade'
+                  key={todo.id}
                 >
-                <TodoItem {...todo}/>
-              </li>
-            </CSSTransition>
-          ))}
-        </TransitionGroup>
-      </ul>
-    </>
+                  <Draggable
+                    index={index}
+                    draggableId={`${todo.id}`}
+                  >
+                    {(providedInner) => (
+                    <li
+                      ref={providedInner.innerRef}
+                      {...providedInner.draggableProps}
+                      {...providedInner.dragHandleProps}
+                      className='flex items-center justify-between mb-4 rounded-2xl bg-zinc-800 p-5 w-full'
+                    >
+                      <TodoItem {...todo}/>
+                    </li>
+                    )}
+                  </Draggable>
+                </CSSTransition>
+              ))}
+            </TransitionGroup>
+            {provided.placeholder}
+          </ul>
+        )}
+      </Droppable>
+    </DragDropContext>
   )
 }
