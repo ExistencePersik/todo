@@ -101,21 +101,21 @@ export const todosApi = createApi({
         method: "PATCH",
         body: data,
       }),
-      async onQueryStarted({ id, data }, { dispatch, queryFulfilled }) {
-        const editTodo = dispatch(
-          todosApi.util.updateQueryData('getTodos', undefined, (draft) => {
-            const task = draft[draft.findIndex(todo => todo.id === id)]
-            if (task) {
-              task.index_number = data.index_number
-            }
-          })
-        )
-        try {
-          await queryFulfilled
-        } catch {
-          editTodo.undo()
-        }
-      }
+      // async onQueryStarted({ id, data }, { dispatch, queryFulfilled }) {
+      //   const editTodo = dispatch(
+      //     todosApi.util.updateQueryData('getTodos', undefined, (draft) => {
+      //       const task = draft[draft.findIndex(todo => todo.id === id)]
+      //       if (task) {
+      //         task.index_number = data.index_number
+      //       }
+      //     })
+      //   )
+      //   try {
+      //     await queryFulfilled
+      //   } catch {
+      //     editTodo.undo()
+      //   }
+      // }
     }),
   })
 })

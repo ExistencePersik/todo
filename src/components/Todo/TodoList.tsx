@@ -17,9 +17,9 @@ export const TodoList = () => {
     const { index: dropIndex } = result.destination
     const dragId = result.draggableId
     const dragIndexNumber = data[dragIndex].index_number
-    const prevIndexNumber = data[dropIndex - 1].index_number
+    const prevIndexNumber = data[dropIndex - 1]?.index_number
     const dropIndexNumber = data[dropIndex].index_number
-    const nextIndexNumber = data[dropIndex + 1].index_number
+    const nextIndexNumber = data[dropIndex + 1]?.index_number
 
     console.log("from", dragIndex)
     console.log("to", dropIndex)
