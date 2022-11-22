@@ -9,50 +9,73 @@ export const TodoList = () => {
   const {data = [], isLoading, isError} = useGetTodosQuery()
   const [swapTodo] = useEditTodoMutation()
 
-  const dragId = useRef<any>(null)
-	const dropId = useRef<any>(null)
-  const dragIndex = useRef<any>(null)
-	const dropIndex = useRef<any>(null)
+  const handleOnDragEnd = async (result: DropResult) => {
+    if (!result.destination) {
+      return
+    }
 
-  const dragStartHandler = (e: React.DragEvent, id: string, index: number) => {
-    dragId.current = id
-    dragIndex.current = index
-  }
+    const { index: dragIndex } = result.source
+    const { index: dropIndex } = result.destination
+    const dragId = data[dragIndex].id
+    const dropId = data[dropIndex].id
 
   const dragEnterHandler = (e: React.DragEvent<HTMLElement>, id: string, index: number) => {
     dropId.current = id
     dropIndex.current = index
   }
 
-  const dragOverHandler = (e: React.DragEvent<HTMLElement>) => {
-    e.preventDefault()
-    e.currentTarget.className = cn('flex items-center justify-between mb-4 rounded-2xl bg-zinc-800 p-5 w-full shadow-lg shadow-pink-400')
-  }
-
-  const dragLeaveHandler = (e: React.DragEvent) => {
-    e.currentTarget.className = cn('flex items-center justify-between mb-4 rounded-2xl bg-zinc-800 p-5 w-full')
-
-  }
-
-  const dropHandler = async (e: React.DragEvent) => {
-    if (dragId.current !== dropId.current) {
-      await swapTodo({
-        id: dragId.current,
-        data: {
-          title: data[dropIndex.current].title,
-          achieved: data[dropIndex.current].achieved,
-          completed: data[dropIndex.current].completed
+    data.forEach(async (todo) => {
+      if (todo.id === dropId) {
+        await swapTodo({
+          id: todo.id,
+          data: {
+            title: data[dragIndex].title,
+            achieved: data[dragIndex].achieved,
+            completed: data[dragIndex].completed
+          }
+        })
+      } else if (dropId < dragId) {
+        if (
+          dropId < todo.id &&
+          dragId >= todo.id
+        ) {
+          await swapTodo({
+            id: todo.id,
+            data: {
+              title: data[data.findIndex(function(data) {
+                return data.id === todo.id
+              }) - 1].title,
+              achieved: data[data.findIndex(function(data) {
+                return data.id === todo.id
+              }) - 1].achieved,
+              completed: data[data.findIndex(function(data) {
+                return data.id === todo.id
+              }) - 1].completed
+            }
+          })
         }
-      })
-      await swapTodo({
-        id: dropId.current,
-        data: {
-          title: data[dragIndex.current].title,
-          achieved: data[dragIndex.current].achieved,
-          completed: data[dragIndex.current].completed
+      } else if (dropId > dragId) {
+        if (
+          dragId <= todo.id &&
+          dropId > todo.id
+        ) {
+          await swapTodo({
+            id: todo.id,
+            data: {
+              title: data[data.findIndex(function(data) {
+                return data.id === todo.id
+              }) + 1].title,
+              achieved: data[data.findIndex(function(data) {
+                return data.id === todo.id
+              }) + 1].achieved,
+              completed: data[data.findIndex(function(data) {
+                return data.id === todo.id
+              }) + 1].completed
+            }
+          })
         }
-      })
-    }
+      }
+    })
   }
 
   return (

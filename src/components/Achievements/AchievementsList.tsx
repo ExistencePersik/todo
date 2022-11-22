@@ -10,50 +10,71 @@ export const AchievementList = () => {
   const [swapTodo] = useEditTodoMutation()
   const achievedData = data.filter((todo) => todo.achieved === true)
 
-  const dragId = useRef<any>(null)
-	const dropId = useRef<any>(null)
-  const dragIndex = useRef<any>(null)
-	const dropIndex = useRef<any>(null)
-
-  const dragStartHandler = (e: React.DragEvent, id: string, index: number) => {
-    dragId.current = id
-    dragIndex.current = index
-  }
-
-  const dragEnterHandler = (e: React.DragEvent<HTMLElement>, id: string, index: number) => {
-    dropId.current = id
-    dropIndex.current = index
-  }
-
-  const dragOverHandler = (e: React.DragEvent<HTMLElement>) => {
-    e.preventDefault()
-    e.currentTarget.className = cn('flex items-center justify-between mb-4 rounded-2xl bg-zinc-800 p-5 w-full shadow-lg shadow-yellow-200')
-  }
-
-  const dragLeaveHandler = (e: React.DragEvent) => {
-    e.currentTarget.className = cn('flex space-between items-center mb-4 rounded-2xl bg-zinc-800 p-5 w-full shadow-lg shadow-yellow-400')
-
-  }
-
-  const dropHandler = async (e: React.DragEvent) => {
-    if (dragId.current !== dropId.current) {
-      await swapTodo({
-        id: dragId.current,
-        data: {
-          title: achievedData[dropIndex.current].title,
-          achieved: achievedData[dropIndex.current].achieved,
-          completed: achievedData[dropIndex.current].completed
-        }
-      })
-      await swapTodo({
-        id: dropId.current,
-        data: {
-          title: achievedData[dragIndex.current].title,
-          achieved: achievedData[dragIndex.current].achieved,
-          completed: achievedData[dragIndex.current].completed
-        }
-      })
+  const handleOnDragEnd = async (result: DropResult) => {
+    if (!result.destination) {
+      return
     }
+
+    const { index: dragIndex } = result.source
+    const { index: dropIndex } = result.destination
+    const dragId = achievedData[dragIndex].id
+    const dropId = achievedData[dropIndex].id
+
+    console.log("from", dragIndex)
+    console.log("to", dropIndex)
+
+    achievedData.forEach(async (todo) => {
+      if (todo.id === dropId) {
+        await swapTodo({
+          id: todo.id,
+          data: {
+            title: achievedData[dragIndex].title,
+            achieved: achievedData[dragIndex].achieved,
+            completed: achievedData[dragIndex].completed
+          }
+        })
+      } else if (dropId < dragId) {
+        if (
+          dropId < todo.id &&
+          dragId >= todo.id
+        ) {
+          await swapTodo({
+            id: todo.id,
+            data: {
+              title: achievedData[achievedData.findIndex(function(achievedData) {
+                return achievedData.id === todo.id
+              }) - 1].title,
+              achieved: achievedData[achievedData.findIndex(function(achievedData) {
+                return achievedData.id === todo.id
+              }) - 1].achieved,
+              completed: achievedData[achievedData.findIndex(function(achievedData) {
+                return achievedData.id === todo.id
+              }) - 1].completed
+            }
+          })
+        }
+      } else if (dropId > dragId) {
+        if (
+          dragId <= todo.id &&
+          dropId > todo.id
+        ) {
+          await swapTodo({
+            id: todo.id,
+            data: {
+              title: achievedData[achievedData.findIndex(function(achievedData) {
+                return achievedData.id === todo.id
+              }) + 1].title,
+              achieved: achievedData[achievedData.findIndex(function(achievedData) {
+                return achievedData.id === todo.id
+              }) + 1].achieved,
+              completed: achievedData[achievedData.findIndex(function(achievedData) {
+                return achievedData.id === todo.id
+              }) + 1].completed
+            }
+          })
+        }
+      }
+    })
   }
 
   return (
