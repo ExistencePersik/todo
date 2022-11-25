@@ -27,9 +27,9 @@ export const TodoList = () => {
     let newIndex
 
     if (prevIndexNumber === undefined) {
-      newIndex = dropIndexNumber - 1
+      newIndex = dropIndexNumber - 100
     } else if (nextIndexNumber === undefined) {
-      newIndex = dropIndexNumber + 1
+      newIndex = dropIndexNumber + 100
     } else if (dragIndexNumber > dropIndexNumber) {
       newIndex = Math.floor((dropIndexNumber + prevIndexNumber) / 2)
     } else if (dragIndexNumber < dropIndexNumber) {
