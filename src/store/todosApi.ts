@@ -98,7 +98,7 @@ export const todosApi = createApi({
     editTodo: build.mutation({
       query: ({ id, data }) => ({
         url: `/todos/${id}`,
-        method: "PATCH",
+        method: 'PATCH',
         body: data,
       }),
       // async onQueryStarted({ id, data }, { dispatch, queryFulfilled }) {

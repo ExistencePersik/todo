@@ -1,12 +1,14 @@
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
+import { useAppDispatch } from '../../hooks/reduxHooks'
 import { ITodos } from '../../models/models'
-import { useEditTodoMutation, useGetTodosQuery } from '../../store/todosApi'
+import { todosApi, useEditTodoMutation, useGetTodosQuery } from '../../store/todosApi'
 import { TodoItem } from './TodoItem'
 
 export const TodoList = () => {
   const {data = [], isLoading, isError} = useGetTodosQuery()
   const [swapTodo] = useEditTodoMutation()
+  const dispatch = useAppDispatch()
 
   const handleOnDragEnd = async (result: DropResult) => {
     if (!result.destination) {
@@ -24,7 +26,7 @@ export const TodoList = () => {
     console.log("from", dragIndex)
     console.log("to", dropIndex)
 
-    let newIndex
+    let newIndex = dragIndexNumber
 
     if (prevIndexNumber === undefined) {
       newIndex = dropIndexNumber - 100
@@ -36,11 +38,19 @@ export const TodoList = () => {
       newIndex = Math.floor((dropIndexNumber + nextIndexNumber) / 2)
     }
 
+    dispatch(
+      todosApi.util.updateQueryData('getTodos', undefined, (draft) => {
+        draft[dragIndex].index_number = newIndex
+        draft.sort((a, b) => a.index_number - b.index_number)
+      })
+    )
+
     await swapTodo({
       id: dragId,
-      data: {
-        index_number: newIndex
-      }
+      index_number: newIndex,
+      title: data[dragIndex].title,
+      completed: data[dragIndex].completed,
+      achieved: data[dragIndex].achieved
     })
   }
 
