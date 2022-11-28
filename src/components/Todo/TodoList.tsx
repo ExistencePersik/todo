@@ -10,8 +10,6 @@ export const TodoList = () => {
   const [swapTodo] = useEditTodoMutation()
   const dispatch = useAppDispatch()
 
-  let sortedData = data.slice()
-
   const handleOnDragEnd = async (result: DropResult) => {
     if (!result.destination) {
       return
@@ -20,10 +18,10 @@ export const TodoList = () => {
     const { index: dragIndex } = result.source
     const { index: dropIndex } = result.destination
     const dragId = result.draggableId
-    const dragIndexNumber = sortedData[dragIndex].index_number
-    const prevIndexNumber = sortedData[dropIndex - 1]?.index_number
-    const dropIndexNumber = sortedData[dropIndex].index_number
-    const nextIndexNumber = sortedData[dropIndex + 1]?.index_number
+    const dragIndexNumber = data[dragIndex].index_number
+    const prevIndexNumber = data[dropIndex - 1]?.index_number
+    const dropIndexNumber = data[dropIndex].index_number
+    const nextIndexNumber = data[dropIndex + 1]?.index_number
 
     console.log("from", dragIndex)
     console.log("to", dropIndex)
@@ -50,10 +48,18 @@ export const TodoList = () => {
     await swapTodo({
       id: dragId,
       index_number: newIndex,
-      title: sortedData[dragIndex].title,
-      completed: sortedData[dragIndex].completed,
-      achieved: sortedData[dragIndex].achieved
+      title: data[dragIndex].title,
+      completed: data[dragIndex].completed,
+      achieved: data[dragIndex].achieved
     })
+
+    // Object.defineProperty(data[dragIndex], 'index_number', {
+    //   value: data[dragIndex].index_number,
+    //   writable: true
+    // })
+
+    // data[dragIndex].index_number = newIndex
+
   }
 
 
@@ -71,7 +77,7 @@ export const TodoList = () => {
           >
             <TransitionGroup>
               {data !== undefined &&
-               sortedData.map((todo: ITodos, index: number) => (
+               data.map((todo: ITodos, index: number) => (
                 <CSSTransition
                   timeout={300}
                   classNames='fade'
