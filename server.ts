@@ -25,9 +25,9 @@ if (fs.existsSync(db)){
   app.use(express.json())
   app.use(cors())
 
-  app.post('/todos', (req, res) => {
+  app.post('/todos', async (req, res) => {
 
-    const existTodos = getTodosData()
+    const existTodos = await getTodosData()
 
     const todoData = {
       id: Date.now().toString(),
@@ -35,16 +35,16 @@ if (fs.existsSync(db)){
     }
     existTodos.push(todoData)
 
-    saveTodosData(existTodos)
+    await saveTodosData(existTodos)
     res.status(201).json(todoData)
   })
 
-  app.get('/todos', (req, res) => {
-    const todos = getTodosData()
+  app.get('/todos', async (req, res) => {
+    const todos = await getTodosData()
     res.status(200).json(todos)
   })
 
-  app.patch('/todos/:id', (req, res) => {
+  app.patch('/todos/:id', async (req, res) => {
     const { id } = req.params
 
     const todoData = {
@@ -52,7 +52,7 @@ if (fs.existsSync(db)){
       ...req.body
     }
 
-    const existTodos = getTodosData()
+    const existTodos = await getTodosData()
     const index = existTodos.findIndex(todo => todo.id === id)
 
     if (index !== -1) {
@@ -61,24 +61,28 @@ if (fs.existsSync(db)){
       res.status(404).json({message: 'Error. ID does not exist'})
     }
 
-    saveTodosData(existTodos)
+    await saveTodosData(existTodos)
     res.json({message: 'Task has been updated'})
   })
 
-  app.delete('/todos/:id', (req, res) => {
+  app.delete('/todos/:id', async (req, res) => {
     const { id } = req.params
 
-    const existTodos = getTodosData()
+    const existTodos = await getTodosData()
 
     const filterTodo = existTodos.filter( todo => todo.id !== id )
 
-    saveTodosData(filterTodo)
+    await saveTodosData(filterTodo)
     res.json({message: 'Task has been removed'})
   })
 
-  const saveTodosData = (data) => {
+  const saveTodosData = async (data) => {
     const stringifyData = JSON.stringify(data)
-    fs.writeFileSync(db, stringifyData)
+    try {
+      await fsPromises.writeFile(db, stringifyData)
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   const getTodosData = async () => {
