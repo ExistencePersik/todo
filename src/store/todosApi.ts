@@ -9,8 +9,7 @@ export const todosApi = createApi({
   }),
   endpoints: build => ({
     getTodos: build.query<ITodos[], void>({
-      query: () => `todos`,
-      transformResponse: (res: ITodos[]) => res.sort((a, b) => a.index_number - b.index_number)
+      query: () => `todos`
     }),
     addTodo: build.mutation<ITodos, string>({
       query: (text) => ({
@@ -19,8 +18,7 @@ export const todosApi = createApi({
         body: {
           title: text,
           completed: false,
-          achieved: false,
-          index_number: Date.now()
+          achieved: false
         }
       }),
       async onQueryStarted( _ , { dispatch, queryFulfilled } ) {
@@ -95,29 +93,14 @@ export const todosApi = createApi({
         }
       }
     }),
-    editTodo: build.mutation({
+    updateOrder: build.mutation({
       query: ({ id, ...data }) => ({
         url: `/todos/${id}`,
         method: 'PATCH',
         body: data,
-      }),
-      // async onQueryStarted({ id, data }, { dispatch, queryFulfilled }) {
-      //   const editTodo = dispatch(
-      //     todosApi.util.updateQueryData('getTodos', undefined, (draft) => {
-      //       const task = draft[draft.findIndex(todo => todo.id === id)]
-      //       if (task) {
-      //         task.index_number = data.index_number
-      //       }
-      //     })
-      //   )
-      //   try {
-      //     await queryFulfilled
-      //   } catch {
-      //     editTodo.undo()
-      //   }
-      // }
+      })
     }),
   })
 })
 
-export const {useGetTodosQuery, useAddTodoMutation, useToggleTodoMutation, useRemoveTodoMutation, useToggleAchievementMutation, useEditTodoMutation} = todosApi
+export const {useGetTodosQuery, useAddTodoMutation, useToggleTodoMutation, useRemoveTodoMutation, useToggleAchievementMutation, useUpdateOrderMutation} = todosApi

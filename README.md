@@ -2,6 +2,6 @@
 
 ## React, Redux Toolkit, RTK Query, TypeScript, Tailwind
 
-react-router-dom, react-icons, classnames, json-server, concurrently
+react-router-dom, react-icons, classnames, concurrently
 
-# To run with json-server - **npm run dev**
+# To run with server - **npm run dev**

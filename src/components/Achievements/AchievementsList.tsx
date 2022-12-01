@@ -1,12 +1,12 @@
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import { ITodos } from '../../models/models'
-import { useEditTodoMutation, useGetTodosQuery } from '../../store/todosApi'
+import { useUpdateOrderMutation, useGetTodosQuery } from '../../store/todosApi'
 import { AchievementItem } from './AchievementItem'
 
 export const AchievementList = () => {
   const {data = [], isLoading, isError} = useGetTodosQuery()
-  const [swapTodo] = useEditTodoMutation()
+  const [updateOrder] = useUpdateOrderMutation()
   const achievedData = data.filter((todo) => todo.achieved === true)
 
   const handleOnDragEnd = async (result: DropResult) => {
@@ -17,32 +17,10 @@ export const AchievementList = () => {
     const { index: dragIndex } = result.source
     const { index: dropIndex } = result.destination
     const dragId = result.draggableId
-    const dragIndexNumber = achievedData[dragIndex].index_number
-    const prevIndexNumber = achievedData[dropIndex - 1]?.index_number
-    const dropIndexNumber = achievedData[dropIndex].index_number
-    const nextIndexNumber = achievedData[dropIndex + 1]?.index_number
 
+    console.log("from id", dragId)
     console.log("from", dragIndex)
     console.log("to", dropIndex)
-
-    let newIndex
-
-    if (prevIndexNumber === undefined) {
-      newIndex = dropIndexNumber - 100
-    } else if (nextIndexNumber === undefined) {
-      newIndex = dropIndexNumber + 100
-    } else if (dragIndexNumber > dropIndexNumber) {
-      newIndex = Math.floor((dropIndexNumber + prevIndexNumber) / 2)
-    } else if (dragIndexNumber < dropIndexNumber) {
-      newIndex = Math.floor((dropIndexNumber + nextIndexNumber) / 2)
-    }
-
-    await swapTodo({
-      id: dragId,
-      data: {
-        index_number: newIndex
-      }
-    })
   }
 
   return (
