@@ -1,6 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { ITodos } from '../models/models'
-import { reorder } from '../utils/reorder'
 
 export const todosApi = createApi({
   reducerPath: 'todosApi',
@@ -103,7 +102,11 @@ export const todosApi = createApi({
       async onQueryStarted({ dragId, dropIndex }, { dispatch, queryFulfilled }) {
         const updateOrder = dispatch(
           todosApi.util.updateQueryData('getTodos', undefined, (draft: ITodos[]) => {
-            reorder(draft, dragId as string, dropIndex as number)
+            const result = draft.slice()
+            const fromIndex = result.findIndex((item) => item.id === dragId)
+            const element = result.splice(fromIndex, 1)[0]
+            result.splice(dropIndex, 0, element)
+            return result
           })
         )
         try {
