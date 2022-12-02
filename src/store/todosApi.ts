@@ -95,15 +95,15 @@ export const todosApi = createApi({
       }
     }),
     updateOrder: build.mutation({
-      query: ({ data }) => ({
+      query: ({dragId, dropIndex}) => ({
         url: `/todos/update_order`,
         method: 'POST',
-        body: data,
+        body: {dragId, dropIndex},
       }),
-      async onQueryStarted({ id, newIndex}, { dispatch, queryFulfilled }) {
+      async onQueryStarted({ dragId, dropIndex }, { dispatch, queryFulfilled }) {
         const updateOrder = dispatch(
-          todosApi.util.updateQueryData('getTodos', undefined, (draft) => {
-            reorder(draft, id, newIndex)
+          todosApi.util.updateQueryData('getTodos', undefined, (draft: ITodos[]) => {
+            reorder(draft, dragId as string, dropIndex as number)
           })
         )
         try {

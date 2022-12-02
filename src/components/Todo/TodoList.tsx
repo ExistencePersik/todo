@@ -13,8 +13,9 @@ export const TodoList = () => {
       return
     }
 
+    const { index: dragIndex } = result.source
     const { index: dropIndex } = result.destination
-    const dragId = result.draggableId
+    const dragId = data[dragIndex].id
 
     await updateOrder({dragId, dropIndex})
   }

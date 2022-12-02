@@ -1,10 +1,10 @@
 import { ITodos } from "../models/models"
 
-export const reorder = <T extends ITodos>(
+export function reorder<T extends ITodos>(
   items: T[],
   id: string,
   newIndex: number
-): T[] => {
+): T[] {
   const result = items.slice()
   const fromIndex = result.findIndex((item) => item.id === id)
   const element = result.splice(fromIndex, 1)[0]
