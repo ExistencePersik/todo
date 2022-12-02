@@ -34,6 +34,16 @@ if (fs.existsSync(db)){
       id: Date.now().toString(),
       ...req.body
     }
+
+    if (todoData.title === null) {
+      return res.status(401).json({error: true, message: 'The input field should not be empty'})
+    }
+
+    const findExist = existTodos.find((todo) => todo.id === todoData.id)
+    if (findExist) {
+      return res.status(409).json({error: true, message: 'Task with this id already exists'})
+    }
+
     existTodos.push(todoData)
 
     await saveTodosData(existTodos)
@@ -46,8 +56,12 @@ if (fs.existsSync(db)){
 
     const result = reorder(existTodos, dragId, dropIndex)
 
+    if (existTodos === result) {
+      return res.status(409).json({error: true, message: 'The order has not changed'})
+    }
+
     await saveTodosData(result)
-    res.json({message: 'List has been reordered'})
+    res.status(201).json({message: 'List has been reordered'})
   })
 
   app.get('/todos', async (req, res) => {
@@ -73,7 +87,7 @@ if (fs.existsSync(db)){
     }
 
     await saveTodosData(existTodos)
-    res.json({message: 'Task has been updated'})
+    res.status(204).json({message: 'Task has been updated'})
   })
 
   app.delete('/todos/:id', async (req, res) => {
@@ -81,10 +95,15 @@ if (fs.existsSync(db)){
 
     const existTodos = await getTodosData()
 
+    const findExist = existTodos.find((todo) => todo.id === id)
+    if (!findExist) {
+      return res.status(404).json({error: true, message: 'Task with this id already exists'})
+    }
+
     const filterTodo = existTodos.filter((todo) => todo.id !== id )
 
     await saveTodosData(filterTodo)
-    res.json({message: 'Task has been removed'})
+    res.status(204).json({message: 'Task has been removed'})
   })
 
   const saveTodosData = async (data) => {
