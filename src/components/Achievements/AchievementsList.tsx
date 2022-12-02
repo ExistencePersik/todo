@@ -14,13 +14,10 @@ export const AchievementList = () => {
       return
     }
 
-    const { index: dragIndex } = result.source
     const { index: dropIndex } = result.destination
     const dragId = result.draggableId
 
-    console.log("from id", dragId)
-    console.log("from", dragIndex)
-    console.log("to", dropIndex)
+    await updateOrder({dragId, dropIndex})
   }
 
   return (

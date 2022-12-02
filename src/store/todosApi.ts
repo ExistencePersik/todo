@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { ITodos } from '../models/models'
+import { reorder } from '../utils/reorder'
 
 export const todosApi = createApi({
   reducerPath: 'todosApi',
@@ -94,11 +95,23 @@ export const todosApi = createApi({
       }
     }),
     updateOrder: build.mutation({
-      query: ({ id, ...data }) => ({
-        url: `/todos/${id}`,
-        method: 'PATCH',
+      query: ({ data }) => ({
+        url: `/todos/update_order`,
+        method: 'POST',
         body: data,
-      })
+      }),
+      async onQueryStarted({ id, newIndex}, { dispatch, queryFulfilled }) {
+        const updateOrder = dispatch(
+          todosApi.util.updateQueryData('getTodos', undefined, (draft) => {
+            reorder(draft, id, newIndex)
+          })
+        )
+        try {
+          await queryFulfilled
+        } catch {
+          updateOrder.undo()
+        }
+      }
     }),
   })
 })
