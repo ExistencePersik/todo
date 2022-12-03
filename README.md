@@ -1,6 +1,6 @@
 # Todo App
 
-## React, Redux Toolkit, RTK Query, TypeScript, Tailwind
+## React, Redux Toolkit, RTK Query, TypeScript, Tailwind, Express
 
 react-router-dom, react-icons, classnames, concurrently
 
