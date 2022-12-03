@@ -17,9 +17,11 @@ export const AchievementList = () => {
     const { index: dragIndex } = result.source
     const { index: dropIndex } = result.destination
     const dragId = result.draggableId
+    const dropId = achievedData[dropIndex].id
+    const initialDropIndex = data.findIndex((todo) => todo.id === dropId)
 
     if (dragIndex !== dropIndex) {
-      await updateOrder({dragId, dropIndex})
+      await updateOrder({dragId, dropIndex: initialDropIndex})
     }
   }
 
