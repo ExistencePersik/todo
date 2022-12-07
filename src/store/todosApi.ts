@@ -43,7 +43,7 @@ export const todosApi = createApi({
       async onQueryStarted({ id, completed }, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
           todosApi.util.updateQueryData('getTodos', undefined, (draft) => {
-            const task = draft[draft.findIndex(todo => todo.id === id)]
+            const task = draft.find((todo) => todo.id === id)
             if (task) task.completed = completed
           })
         )
@@ -82,7 +82,7 @@ export const todosApi = createApi({
       async onQueryStarted({ id, achieved }, { dispatch, queryFulfilled }) {
         const patchAchievement = dispatch(
           todosApi.util.updateQueryData('getTodos', undefined, (draft) => {
-            const task = draft[draft.findIndex(todo => todo.id === id)]
+            const task = draft.find((todo) => todo.id === id)
             if (task) task.achieved = achieved
           })
         )
