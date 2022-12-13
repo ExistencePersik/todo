@@ -39,7 +39,11 @@ app.post('/todos', async (req, res) => {
 
   existingTodos.push(todoData)
 
-  await saveTodosData(existingTodos)
+  try {
+    await saveTodosData(existingTodos)
+  } catch (err) {
+    res.status(500).json({error: true, message: err.message})
+  }
   res.status(201).json(todoData)
 })
 
@@ -53,13 +57,21 @@ app.post('/todos/update_order', async (req, res) => {
     return res.status(409).json({error: true, message: 'The order has not changed'})
   }
 
-  await saveTodosData(result)
+  try {
+    await saveTodosData(result)
+  } catch (err) {
+    res.status(500).json({error: true, message: err.message})
+  }
   res.status(201).json({message: 'List has been reordered'})
 })
 
 app.get('/todos', async (req, res) => {
-  const todos = await getTodosData()
-  res.status(200).json(todos)
+  try {
+    const todos = await getTodosData()
+    res.status(200).json(todos)
+  } catch (err) {
+    res.status(500).json({error: true, message: err.message})
+  }
 })
 
 app.patch('/todos/:id', async (req, res) => {
@@ -79,7 +91,11 @@ app.patch('/todos/:id', async (req, res) => {
     res.status(404).json({message: 'Error. ID does not exist'})
   }
 
-  await saveTodosData(existingTodos)
+  try {
+    await saveTodosData(existingTodos)
+  } catch (err) {
+    res.status(500).json({error: true, message: err.message})
+  }
   res.status(204).json({message: 'Task has been updated'})
 })
 
@@ -95,7 +111,11 @@ app.delete('/todos/:id', async (req, res) => {
 
   const filterTodo = existingTodos.filter((todo) => todo.id !== id )
 
-  await saveTodosData(filterTodo)
+  try {
+    await saveTodosData(filterTodo)
+  } catch (err) {
+    res.status(500).json({error: true, message: err.message})
+  }
   res.status(204).json({message: 'Task has been removed'})
 })
 
